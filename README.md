@@ -13,3 +13,5 @@ To run the file, there are two options:
   This will extract data for the default car (Lexus GSF in 60004)
 1. ```python3 car_price.py <make> <model> <zip>```
   This will extract data for the specified car where every field beginning with < and ending with > is to be replaced with the respective field
+  
+Additionally, update ```driver = webdriver.Chrome('/usr/local/bin/chromedriver')``` so that the string inside ```webdriver.Chrome()``` reflects the location of the chromedriver file.
