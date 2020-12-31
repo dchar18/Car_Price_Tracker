@@ -6,6 +6,7 @@ import re
 import json
 import requests
 import sys
+import datetime
 
 arguments = sys.argv
 
@@ -46,6 +47,8 @@ else:
         zip = arguments[4]
     else:
         print(arguments)
+
+date = datetime.datetime.now().strftime('%x')
 
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 url = 'https://www.autotempest.com/results?make=' + make.lower() + '&model=' + model + '&zip=' + zip
@@ -92,14 +95,16 @@ for item in results:
     locations.append(item.find("span", class_="location-info-wrap").text.strip())
     links.append(item.find('a', href=True)['href'])
 
+dates = [date]*len(results)
+
 # display the extracted information
 for k in range(0, len(results)):
-    print(years[k], '\t', titles[k], '\t', prices[k], '\t', mileages[k], '\t', locations[k], '\t', links[k])
+    print(dates[k], '\t', years[k], '\t', titles[k], '\t', prices[k], '\t', mileages[k], '\t', locations[k], '\t', links[k])
 print("Num results: ", len(results))
 
 # store the extracted information in a dataframe
-df = pd.DataFrame({'Car':titles,'Year': years, 'Price':prices,'Mileage':mileages,'Location':locations,'URL':links}) 
+df = pd.DataFrame({'Date': dates, 'Car': titles, 'Year': years, 'Price': prices, 'Mileage': mileages, 'Location': locations, 'URL': links}) 
 csv_title = model + '_prices.csv'
-df.to_csv(csv_title, index=False, encoding='utf-8')
+df.to_csv(csv_title, mode='a', encoding='utf-8', index=False)
 
 driver.close()
