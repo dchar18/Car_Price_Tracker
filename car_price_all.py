@@ -9,14 +9,15 @@ import sys
 import datetime
 
 cars = [
-    ('lexus', 'gsf', '60004'),
-    ('lexus', 'rcf', '60004'), 
-    ('lexus', 'lc500', '60004'), 
-    ('lexus', 'gs350', '60004', 'F Sport'),
-    ('lexus', 'is350', '60004', 'F Sport'),
-    ('mazda', 'mazdaspeed3', '60004'),
+    # ('lexus', 'gsf', '60004'),
+    # ('lexus', 'rcf', '60004'),
+    # ('lexus', 'lc500', '60004'),
+    # ('lexus', 'gs350', '60004', 'F Sport'),
+    # ('lexus', 'is350', '60004', 'F Sport'),
+    # ('mazda', 'mazdaspeed3', '60004'),
     ('tesla', 'model3', '60004'),
     ('toyota', 'rav4', '60004'),
+    ('lexus', 'ls500', '60004', 'F Sport')
 ]
 date = datetime.datetime.now().strftime('%x')
 
@@ -34,12 +35,16 @@ for car in cars:
 
     # tuple has (make, model, zip)
     if len(car) == 3:
-        url = 'https://www.autotempest.com/results?make=' + make.lower() + '&model=' + model.lower() + '&zip=' + zip
+        print(make, ' ', model)
+        url = 'https://www.autotempest.com/results?make=' + \
+            make.lower() + '&model=' + model.lower() + '&zip=' + zip
     # tuple has (make, model, zip, trim)
     else:
         trim = car[3].replace(' ', '+')
-        url = 'https://www.autotempest.com/results?make=' + make.lower() + '&model=' + model.lower() + '&trim_kw=' + trim + '&zip=' + zip
-    
+        print(make, ' ', model, ' ', trim)
+        url = 'https://www.autotempest.com/results?make=' + \
+            make.lower() + '&model=' + model.lower() + '&trim_kw=' + trim + '&zip=' + zip
+
     driver = webdriver.Chrome('/usr/local/bin/chromedriver')
     print("Searching: " + url)
     driver.get(url)
@@ -53,7 +58,7 @@ for car in cars:
     sleep(5)
     # pull the 'result-list-item' elements from the page
     # 'result-list-item' is the common element among each posting in the page
-    results = soup.findAll('li', attrs={'class':'result-list-item'})
+    results = soup.findAll('li', attrs={'class': 'result-list-item'})
 
     # regular expression for finding the model year
     regex = re.compile(r"[0-9]{4}")
@@ -80,19 +85,21 @@ for car in cars:
             mileages.append(item.find("span", class_="info mileage").text)
         except:
             mileages.append("N/A")
-        
-        locations.append(item.find("span", class_="location-info-wrap").text.strip())
+
+        locations.append(
+            item.find("span", class_="location-info-wrap").text.strip())
         links.append(item.find('a', href=True)['href'])
 
     dates = [date]*len(results)
 
     # display the extracted information
-    for k in range(0, len(results)):
-        print(dates[k], '\t', years[k], '\t', titles[k], '\t', prices[k], '\t', mileages[k], '\t', locations[k], '\t', links[k])
+    # for k in range(0, len(results)):
+    # print(dates[k], '\t', years[k], '\t', titles[k], '\t', prices[k], '\t', mileages[k], '\t', locations[k], '\t', links[k])
     print("Num results: ", len(results))
 
     # store the extracted information in a dataframe
-    df = pd.DataFrame({'Date': dates, 'Car': titles, 'Year': years, 'Price': prices, 'Mileage': mileages, 'Location': locations, 'URL': links}) 
+    df = pd.DataFrame({'Date': dates, 'Car': titles, 'Year': years, 'Price': prices,
+                       'Mileage': mileages, 'Location': locations, 'URL': links})
     csv_title = model + '_prices.csv'
     df.to_csv(csv_title, mode='a', encoding='utf-8', index=False)
 
