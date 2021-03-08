@@ -9,12 +9,12 @@ import sys
 import datetime
 
 cars = [
-    # ('lexus', 'gsf', '60004'),
-    # ('lexus', 'rcf', '60004'),
-    # ('lexus', 'lc500', '60004'),
-    # ('lexus', 'gs350', '60004', 'F Sport'),
-    # ('lexus', 'is350', '60004', 'F Sport'),
-    # ('mazda', 'mazdaspeed3', '60004'),
+    ('lexus', 'gsf', '60004'),
+    ('lexus', 'rcf', '60004'),
+    ('lexus', 'lc500', '60004'),
+    ('lexus', 'gs350', '60004', 'F Sport'),
+    ('lexus', 'is350', '60004', 'F Sport'),
+    ('mazda', 'mazdaspeed3', '60004'),
     ('tesla', 'model3', '60004'),
     ('toyota', 'rav4', '60004'),
     ('lexus', 'ls500', '60004', 'F Sport')
