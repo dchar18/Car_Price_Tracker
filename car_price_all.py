@@ -16,7 +16,7 @@ cars = [
     ('lexus', 'is350', '60004', 'F Sport'),
     ('mazda', 'mazdaspeed3', '60004'),
     ('tesla', 'model3', '60004'),
-    ('toyota', 'rav4', '60004'),
+    # ('toyota', 'rav4', '60004'),
     ('lexus', 'ls500', '60004', 'F Sport')
 ]
 date = datetime.datetime.now().strftime('%x')
