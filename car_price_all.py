@@ -102,12 +102,24 @@ for car in cars:
     # display the extracted information
     # for k in range(0, len(results)):
     # print(dates[k], '\t', years[k], '\t', titles[k], '\t', prices[k], '\t', mileages[k], '\t', locations[k], '\t', links[k])
-    print("Num results: ", len(results))
+    # print("Num results: ", len(results))
 
     # store the extracted information in a dataframe
     df = pd.DataFrame({'Date': dates, 'Car': titles, 'Year': years, 'Price': prices,
                        'Mileage': mileages, 'Location': locations, 'URL': links})
-    csv_title = model + '_prices.csv'
+
+    csv_title = ''
+    # tuple has (make, model, zip)
+    if len(car) == 3:
+        csv_title = model + '_prices.csv'
+        print(csv_title)
+    # tuple has (make, model, zip, trim)
+    else:
+        trim = car[3].replace(' ', '')
+        trim = trim.lower()
+        csv_title = model + '_' + trim + '_prices.csv'
+        print(csv_title)
+
     df.to_csv(csv_title, mode='a', encoding='utf-8', index=False)
 
     driver.close()
