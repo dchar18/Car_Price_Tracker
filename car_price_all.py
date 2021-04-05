@@ -17,11 +17,13 @@ cars = [
     ('mazda', 'mazdaspeed3', '60004'),
     ('tesla', 'model3', '60004'),
     # ('toyota', 'rav4', '60004'),
-    ('lexus', 'ls500', '60004', 'F Sport')
+    ('lexus', 'ls500', '60004', 'F Sport'),
+    ('infiniti', 'q60', '60004', 'red sport')
 ]
 date = datetime.datetime.now().strftime('%x')
 
 for car in cars:
+    retrieved = False  # used as a flag for exception handling
     titles = []
     years = []
     prices = []
@@ -52,13 +54,18 @@ for car in cars:
 
     content = driver.page_source
 
-    # open the webpage
-    soup = BeautifulSoup(content, features="html.parser")
-    # wait for the webpage to load
-    sleep(5)
-    # pull the 'result-list-item' elements from the page
-    # 'result-list-item' is the common element among each posting in the page
-    results = soup.findAll('li', attrs={'class': 'result-list-item'})
+    while not retrieved:
+        try:
+            # open the webpage
+            soup = BeautifulSoup(content, features="html.parser")
+            # wait for the webpage to load
+            sleep(5)
+            # pull the 'result-list-item' elements from the page
+            # 'result-list-item' is the common element among each posting in the page
+            results = soup.findAll('li', attrs={'class': 'result-list-item'})
+            retrieved = True
+        except:
+            print('Error occured. Trying again...')
 
     # regular expression for finding the model year
     regex = re.compile(r"[0-9]{4}")
